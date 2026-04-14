@@ -17,7 +17,7 @@ import {
 import { createNotePayload, normalizeNoteOrder, sortNotes } from "./utils.js";
 
 const state = {
-  notes: loadNotes(),
+  notes: [],
   drag: {
     draggedNoteId: "",
     sourceCard: null,
@@ -60,7 +60,7 @@ function syncView() {
 
 function persistNotes(nextNotes, shouldRender = true) {
   state.notes = normalizeNoteOrder(nextNotes);
-  saveNotes(state.notes);
+  void saveNotes(state.notes);
 
   if (shouldRender) {
     syncView();
@@ -551,6 +551,11 @@ elements.notesGrid.addEventListener("click", handleGridClick);
 elements.notesGrid.addEventListener("keydown", handleGridKeydown);
 document.addEventListener("keydown", handleEscape);
 
-resetForm(elements);
-closeComposer(elements);
-syncView();
+async function initializeApp() {
+  resetForm(elements);
+  closeComposer(elements);
+  state.notes = await loadNotes();
+  syncView();
+}
+
+void initializeApp();

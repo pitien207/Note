@@ -2,6 +2,7 @@ import { generateId, normalizeNoteOrder } from "./utils.js";
 
 const STORAGE_KEY = "note:v1";
 const LEGACY_STORAGE_KEY = "quiet-notes:v1";
+const API_ENDPOINT = "/api/notes";
 
 function createSeedNotes() {
   const now = new Date().toISOString();
@@ -28,7 +29,7 @@ function createSeedNotes() {
   ]);
 }
 
-export function loadNotes() {
+function readBrowserStorage() {
   const stored = localStorage.getItem(STORAGE_KEY);
   const legacyStored = localStorage.getItem(LEGACY_STORAGE_KEY);
 
@@ -40,31 +41,88 @@ export function loadNotes() {
   const nextStored = localStorage.getItem(STORAGE_KEY);
 
   if (!nextStored) {
-    const seedNotes = createSeedNotes();
-    saveNotes(seedNotes);
-    return seedNotes;
+    return null;
   }
 
   try {
     const notes = JSON.parse(nextStored);
-
-    if (!Array.isArray(notes)) {
-      return [];
-    }
-
-    const normalizedNotes = normalizeNoteOrder(notes);
-
-    if (normalizedNotes.some((note, index) => note.order !== notes[index]?.order)) {
-      saveNotes(normalizedNotes);
-    }
-
-    return normalizedNotes;
+    return Array.isArray(notes) ? normalizeNoteOrder(notes) : null;
   } catch (error) {
-    console.error("Failed to parse stored notes.", error);
-    return [];
+    console.error("Failed to parse stored notes from localStorage.", error);
+    return null;
   }
 }
 
-export function saveNotes(notes) {
+function writeBrowserStorage(notes) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+}
+
+async function fetchRemoteNotes() {
+  const response = await fetch(API_ENDPOINT, {
+    headers: {
+      Accept: "application/json",
+    },
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to load remote notes: ${response.status}`);
+  }
+
+  const notes = await response.json();
+  return Array.isArray(notes) ? normalizeNoteOrder(notes) : [];
+}
+
+async function writeRemoteNotes(notes) {
+  const response = await fetch(API_ENDPOINT, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(notes),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to save remote notes: ${response.status}`);
+  }
+}
+
+export async function loadNotes() {
+  try {
+    const remoteNotes = await fetchRemoteNotes();
+
+    if (remoteNotes.length) {
+      writeBrowserStorage(remoteNotes);
+      return remoteNotes;
+    }
+  } catch (error) {
+    console.warn("Remote note storage is unavailable, using browser storage.", error);
+  }
+
+  const browserNotes = readBrowserStorage();
+
+  if (browserNotes?.length) {
+    return browserNotes;
+  }
+
+  const seedNotes = createSeedNotes();
+  writeBrowserStorage(seedNotes);
+
+  try {
+    await writeRemoteNotes(seedNotes);
+  } catch (error) {
+    console.warn("Failed to seed remote note storage.", error);
+  }
+
+  return seedNotes;
+}
+
+export async function saveNotes(notes) {
+  writeBrowserStorage(notes);
+
+  try {
+    await writeRemoteNotes(notes);
+  } catch (error) {
+    console.warn("Failed to save notes to remote storage.", error);
+  }
 }
