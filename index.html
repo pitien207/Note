@@ -30,27 +30,6 @@
         </a>
         <div class="topbar-actions">
           <button
-            class="icon-button icon-button-secondary"
-            id="open-controls"
-            type="button"
-            aria-label="Open note controls"
-            title="Open note controls"
-          >
-            <svg
-              class="button-icon"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                d="M4 7H20M7 12H17M10 17H14"
-                fill="none"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-width="2.2"
-              />
-            </svg>
-          </button>
-          <button
             class="icon-button"
             id="open-composer"
             type="button"
@@ -64,12 +43,11 @@
 
       <main class="dashboard">
         <section>
-          <p class="notes-counter hidden" id="notes-count">0 notes</p>
           <div id="notes-grid" class="notes-grid" aria-live="polite"></div>
 
           <div id="empty-state" class="panel empty-state hidden">
             <h2>No notes found</h2>
-            <p>Create a new note or change the filters.</p>
+            <p>Create a new note to get started.</p>
           </div>
         </section>
       </main>
@@ -82,150 +60,85 @@
         class="panel composer-modal"
         role="dialog"
         aria-modal="true"
-        aria-labelledby="composer-title"
+        aria-label="Note editor"
       >
-        <div class="modal-header">
-          <div>
-            <p class="eyebrow">Note editor</p>
-            <h2 id="composer-title">New note</h2>
-          </div>
-          <button
-            class="ghost-button modal-close"
-            id="close-composer"
-            type="button"
-            aria-label="Close note editor"
-          >
-            Close
-          </button>
-        </div>
-
-        <form id="note-form" class="note-form">
+        <form id="note-form" class="note-form note-form-minimal">
           <input type="hidden" id="note-id" />
 
-          <label class="field">
-            <span class="field-label">Title</span>
-            <input
-              id="note-title"
-              name="title"
-              type="text"
-              maxlength="80"
-              placeholder="Example: Weekly priorities"
-              required
-            />
-          </label>
+          <input
+            id="note-title"
+            name="title"
+            type="text"
+            maxlength="80"
+            class="composer-title-input"
+            placeholder="Title (optional)"
+          />
 
-          <label class="field">
-            <span class="field-label">Category</span>
-            <select id="note-category" name="category">
-              <option value="Work">Work</option>
-              <option value="Personal">Personal</option>
-              <option value="Ideas">Ideas</option>
-              <option value="Study">Study</option>
-              <option value="Planning">Planning</option>
-            </select>
-          </label>
-
-          <label class="field">
-            <span class="field-label">Note</span>
-            <textarea
-              id="note-content"
-              name="content"
-              rows="8"
-              maxlength="600"
-              placeholder="Write down what you want to remember..."
-              required
-            ></textarea>
-          </label>
-
-          <label class="toggle">
-            <input id="note-pinned" name="pinned" type="checkbox" />
-            <span>Pin this note</span>
-          </label>
+          <textarea
+            id="note-content"
+            name="content"
+            rows="10"
+            maxlength="600"
+            class="composer-content-input"
+            placeholder=""
+            required
+          ></textarea>
 
           <div class="form-actions">
             <button class="primary-button" type="submit" id="submit-note">
-              Save note
+              Save
             </button>
-            <button class="ghost-button" id="reset-note" type="button">
-              Clear
+            <button class="ghost-button" id="close-composer" type="button">
+              Close
             </button>
           </div>
-
-          <p class="form-hint" id="form-hint">
-            Notes are stored in your browser automatically.
-          </p>
         </form>
       </section>
     </div>
 
-    <div class="modal hidden" id="controls-modal" aria-hidden="true">
-      <div class="modal-backdrop" data-close-controls="true"></div>
-
-      <section
-        class="panel controls-modal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="controls-title"
-      >
-        <div class="modal-header">
-          <div>
-            <p class="eyebrow">Note controls</p>
-            <h2 id="controls-title">Search and filter</h2>
-          </div>
-          <button
-            class="ghost-button modal-close"
-            id="close-controls"
-            type="button"
-            aria-label="Close note controls"
-          >
-            Close
-          </button>
-        </div>
-
-        <div class="controls-form">
-          <label class="field">
-            <span class="field-label">Search</span>
-            <input
-              id="search-input"
-              type="search"
-              placeholder="Search notes"
-            />
-          </label>
-
-          <label class="field">
-            <span class="field-label">Category</span>
-            <select id="category-filter">
-              <option value="all">All categories</option>
-              <option value="Work">Work</option>
-              <option value="Personal">Personal</option>
-              <option value="Ideas">Ideas</option>
-              <option value="Study">Study</option>
-              <option value="Planning">Planning</option>
-            </select>
-          </label>
-        </div>
-      </section>
-    </div>
-
-    <div class="modal hidden" id="preview-modal" aria-hidden="true">
-      <div class="modal-backdrop" data-close-preview="true"></div>
-
-      <section
-        class="preview-shell"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Note preview"
-      >
-        <button
-          class="ghost-button modal-close preview-close"
-          id="close-preview"
-          type="button"
-          aria-label="Close note preview"
-        >
-          Close
-        </button>
-        <div id="preview-card"></div>
-      </section>
+    <div class="delete-dropzone hidden" id="delete-dropzone" aria-hidden="true">
+      <div class="delete-dropzone-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M4 7l16 0"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-width="1.8"
+          />
+          <path
+            d="M10 11l0 6"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-width="1.8"
+          />
+          <path
+            d="M14 11l0 6"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-width="1.8"
+          />
+          <path
+            d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.8"
+          />
+          <path
+            d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="1.8"
+          />
+        </svg>
+      </div>
+      <p>Drop here to delete</p>
     </div>
 
     <script type="module" src="./src/scripts/app.js"></script>

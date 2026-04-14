@@ -6,29 +6,15 @@ export function generateId() {
   return `note-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
-export function sortNotes(notes) {
-  return [...notes].sort((left, right) => {
-    if (left.pinned !== right.pinned) {
-      return left.pinned ? -1 : 1;
-    }
-
-    return new Date(right.updatedAt) - new Date(left.updatedAt);
-  });
+export function normalizeNoteOrder(notes) {
+  return notes.map((note, index) => ({
+    ...note,
+    order: index,
+  }));
 }
 
-export function filterNotes(notes, filters) {
-  const query = filters.query.trim().toLowerCase();
-
-  return notes.filter((note) => {
-    const matchesCategory =
-      filters.category === "all" || note.category === filters.category;
-    const matchesQuery =
-      !query ||
-      note.title.toLowerCase().includes(query) ||
-      note.content.toLowerCase().includes(query);
-
-    return matchesCategory && matchesQuery;
-  });
+export function sortNotes(notes) {
+  return [...notes].sort((left, right) => (left.order ?? 0) - (right.order ?? 0));
 }
 
 export function createNotePayload(formData, existingId) {
@@ -37,9 +23,9 @@ export function createNotePayload(formData, existingId) {
   return {
     id: existingId || generateId(),
     title: formData.title.trim(),
-    category: formData.category,
     content: formData.content.trim(),
     pinned: formData.pinned,
+    order: formData.order ?? 0,
     createdAt: formData.createdAt || timestamp,
     updatedAt: timestamp,
   };

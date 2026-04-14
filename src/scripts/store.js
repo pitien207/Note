@@ -1,4 +1,4 @@
-import { generateId } from "./utils.js";
+import { generateId, normalizeNoteOrder } from "./utils.js";
 
 const STORAGE_KEY = "note:v1";
 const LEGACY_STORAGE_KEY = "quiet-notes:v1";
@@ -6,11 +6,10 @@ const LEGACY_STORAGE_KEY = "quiet-notes:v1";
 function createSeedNotes() {
   const now = new Date().toISOString();
 
-  return [
+  return normalizeNoteOrder([
     {
       id: generateId(),
       title: "Weekly priorities",
-      category: "Work",
       content:
         "Prepare the client presentation, review the design feedback, and send the final timeline before Friday afternoon.",
       pinned: true,
@@ -20,14 +19,13 @@ function createSeedNotes() {
     {
       id: generateId(),
       title: "Ideas to revisit",
-      category: "Ideas",
       content:
-        "Build a calmer note dashboard with categories, elegant typography, and a quick search field for faster recall.",
+        "Build a calmer note dashboard with elegant typography, quick pinning, and a larger preview for long writing.",
       pinned: false,
       createdAt: now,
       updatedAt: now,
     },
-  ];
+  ]);
 }
 
 export function loadNotes() {
@@ -49,7 +47,18 @@ export function loadNotes() {
 
   try {
     const notes = JSON.parse(nextStored);
-    return Array.isArray(notes) ? notes : [];
+
+    if (!Array.isArray(notes)) {
+      return [];
+    }
+
+    const normalizedNotes = normalizeNoteOrder(notes);
+
+    if (normalizedNotes.some((note, index) => note.order !== notes[index]?.order)) {
+      saveNotes(normalizedNotes);
+    }
+
+    return normalizedNotes;
   } catch (error) {
     console.error("Failed to parse stored notes.", error);
     return [];
