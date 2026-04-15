@@ -28,3 +28,11 @@ http://<your-raspberry-pi-ip>:8000
 ```
 
 Notes will be stored in `data/notes.json` inside this project folder.
+
+If you are using Cloudflare Tunnel or another reverse proxy on a custom local port, run the server on that port instead:
+
+```bash
+PORT=34003 python3 server.py
+```
+
+Then point your proxy or tunnel ingress to the same port.

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -9,6 +10,8 @@ from pathlib import Path
 ROOT_DIR = Path(__file__).resolve().parent
 DATA_DIR = ROOT_DIR / "data"
 NOTES_FILE = DATA_DIR / "notes.json"
+DEFAULT_HOST = "0.0.0.0"
+DEFAULT_PORT = 8000
 
 
 def ensure_notes_file() -> None:
@@ -16,6 +19,18 @@ def ensure_notes_file() -> None:
 
     if not NOTES_FILE.exists():
         NOTES_FILE.write_text("[]\n", encoding="utf-8")
+
+
+def resolve_bind_address() -> tuple[str, int]:
+    host = os.getenv("HOST", DEFAULT_HOST).strip() or DEFAULT_HOST
+    raw_port = os.getenv("PORT", str(DEFAULT_PORT)).strip() or str(DEFAULT_PORT)
+
+    try:
+        port = int(raw_port)
+    except ValueError as error:
+        raise ValueError(f"Invalid PORT value: {raw_port}") from error
+
+    return host, port
 
 
 class NoteRequestHandler(SimpleHTTPRequestHandler):
@@ -81,8 +96,9 @@ class NoteRequestHandler(SimpleHTTPRequestHandler):
 
 def run() -> None:
     ensure_notes_file()
-    server = ThreadingHTTPServer(("0.0.0.0", 8000), NoteRequestHandler)
-    print("Serving Note app on http://0.0.0.0:8000")
+    host, port = resolve_bind_address()
+    server = ThreadingHTTPServer((host, port), NoteRequestHandler)
+    print(f"Serving Note app on http://{host}:{port}")
     print(f"Notes file: {NOTES_FILE}")
     server.serve_forever()
 
