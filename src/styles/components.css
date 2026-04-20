@@ -14,9 +14,15 @@
 
 .composer-title-input,
 .composer-content-input {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 18px;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 250, 240, 0.96) 0 31px,
+      rgba(76, 93, 116, 0.12) 32px,
+      rgba(255, 250, 240, 0.96) 33px
+    );
+  border: 1.5px solid rgba(62, 62, 58, 0.18);
+  border-radius: 9px 12px 10px 8px;
   color: var(--text);
   outline: none;
   transition:
@@ -26,16 +32,18 @@
 }
 
 .composer-title-input {
-  font-family: "Fraunces", serif;
-  font-size: 1.3rem;
-  letter-spacing: -0.03em;
+  font-family: "Kalam", "Patrick Hand", cursive;
+  font-size: 1.36rem;
+  font-weight: 700;
+  letter-spacing: 0;
   min-height: 58px;
   padding: 16px 18px;
 }
 
 .composer-content-input {
-  font-size: 1rem;
-  line-height: 1.7;
+  font-family: "Patrick Hand", "Kalam", cursive;
+  font-size: 1.12rem;
+  line-height: 1.55;
   min-height: min(54vh, 420px);
   padding: 18px;
   resize: none;
@@ -48,9 +56,10 @@
 
 .composer-title-input:focus,
 .composer-content-input:focus {
-  background: rgba(255, 255, 255, 0.98);
-  border-color: rgba(52, 84, 180, 0.18);
-  box-shadow: 0 0 0 4px rgba(52, 84, 180, 0.08);
+  border-color: rgba(64, 61, 55, 0.32);
+  box-shadow:
+    3px 4px 0 rgba(64, 59, 50, 0.1),
+    0 0 0 4px rgba(234, 212, 166, 0.22);
 }
 
 .field {
@@ -85,8 +94,8 @@
 
 .field input:focus,
 .field textarea:focus {
-  border-color: rgba(52, 84, 180, 0.4);
-  box-shadow: 0 0 0 4px rgba(52, 84, 180, 0.12);
+  border-color: rgba(64, 61, 55, 0.34);
+  box-shadow: 0 0 0 4px rgba(234, 212, 166, 0.2);
   transform: translateY(-1px);
 }
 
@@ -101,7 +110,8 @@
 .primary-button,
 .ghost-button,
 .icon-button {
-  border-radius: 999px;
+  border-radius: 9px 12px 10px 11px;
+  font-family: "Kalam", "Patrick Hand", cursive;
   font-weight: 700;
   transition:
     transform 180ms ease,
@@ -114,8 +124,7 @@
 .primary-button,
 .ghost-button,
 .icon-button {
-  border: 0;
-  border-radius: 999px;
+  border: 1.5px solid rgba(52, 50, 45, 0.22);
 }
 
 .primary-button,
@@ -125,19 +134,18 @@
 }
 
 .primary-button {
-  background: linear-gradient(135deg, #4e7cff, #2747a8);
-  box-shadow: 0 16px 26px rgba(78, 124, 255, 0.24);
-  color: #ffffff;
+  background: #3f4548;
+  box-shadow: 3px 4px 0 rgba(64, 59, 50, 0.14);
+  color: #fffaf0;
 }
 
 .icon-button {
   align-items: center;
-  background:
-    linear-gradient(135deg, #4e7cff, #2747a8);
-  box-shadow: 0 16px 28px rgba(78, 124, 255, 0.24);
-  color: #ffffff;
+  background: #fff7dd;
+  box-shadow: 3px 4px 0 rgba(64, 59, 50, 0.16);
+  color: #343331;
   display: inline-flex;
-  font-size: 1.8rem;
+  font-size: 2rem;
   height: 52px;
   justify-content: center;
   line-height: 1;
@@ -150,14 +158,14 @@
 }
 
 .icon-button-secondary {
-  background: linear-gradient(135deg, #4e7cff, #2747a8);
-  box-shadow: 0 16px 28px rgba(78, 124, 255, 0.24);
-  color: #ffffff;
+  background: #fff7dd;
+  box-shadow: 3px 4px 0 rgba(64, 59, 50, 0.16);
+  color: #343331;
 }
 
 .ghost-button {
-  background: rgba(255, 255, 255, 0.84);
-  border: 1px solid rgba(78, 124, 255, 0.1);
+  background: rgba(255, 250, 240, 0.9);
+  border: 1.5px solid rgba(52, 50, 45, 0.18);
   color: var(--text);
 }
 
@@ -176,16 +184,23 @@
 .note-card {
   animation: rise-in 360ms ease both;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 255, 0.94));
-  border: 1px solid rgba(78, 124, 255, 0.12);
-  border-radius: 20px;
-  box-shadow: 0 18px 30px rgba(58, 82, 140, 0.08);
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 250, 240, 0.98) 0 31px,
+      rgba(76, 93, 116, 0.14) 32px,
+      rgba(255, 250, 240, 0.98) 33px
+    );
+  border: 1.5px solid rgba(54, 52, 47, 0.24);
+  border-radius: 11px 8px 13px 9px;
+  box-shadow:
+    4px 5px 0 rgba(64, 59, 50, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.72) inset;
   display: grid;
   align-content: start;
   gap: 16px;
   min-height: 220px;
   overflow: hidden;
-  padding: 18px 18px 20px;
+  padding: 20px 20px 22px;
   position: relative;
   transition:
     transform 180ms ease,
@@ -198,14 +213,16 @@
 }
 
 .note-card::before {
-  background: linear-gradient(90deg, #4e7cff, #2747a8);
-  border-radius: 999px;
+  background: rgba(72, 68, 60, 0.34);
+  border-radius: 12px 999px 999px 12px;
   content: "";
   height: 4px;
   left: 18px;
+  pointer-events: none;
   position: absolute;
   right: 18px;
-  top: 0;
+  top: 10px;
+  transform: rotate(-0.25deg);
 }
 
 .note-card.interactive {
@@ -214,23 +231,25 @@
 }
 
 .note-card.interactive:focus-visible {
-  border-color: rgba(78, 124, 255, 0.3);
+  border-color: rgba(54, 52, 47, 0.42);
   box-shadow:
-    0 18px 30px rgba(58, 82, 140, 0.1),
-    0 0 0 4px rgba(78, 124, 255, 0.12);
+    4px 5px 0 rgba(64, 59, 50, 0.12),
+    0 0 0 4px rgba(234, 212, 166, 0.26);
   outline: none;
 }
 
 .note-card:hover {
-  border-color: rgba(78, 124, 255, 0.24);
-  box-shadow: 0 22px 38px rgba(58, 82, 140, 0.12);
-  transform: translateY(-3px);
+  border-color: rgba(54, 52, 47, 0.34);
+  box-shadow:
+    5px 6px 0 rgba(64, 59, 50, 0.15),
+    0 1px 0 rgba(255, 255, 255, 0.72) inset;
+  transform: translateY(-2px) rotate(-0.25deg);
 }
 
 .note-card.is-dragging {
   cursor: grabbing;
-  opacity: 0.16;
-  transform: scale(0.97);
+  opacity: 0.14;
+  transform: scale(0.985);
 }
 
 .drag-proxy {
@@ -245,22 +264,22 @@
   transform-origin: center center;
   will-change: transform;
   z-index: 35;
-  box-shadow: 0 22px 42px rgba(58, 82, 140, 0.18);
+  box-shadow: 7px 9px 0 rgba(64, 59, 50, 0.16);
   transition:
     box-shadow 180ms ease,
     opacity 180ms ease;
 }
 
 .drag-proxy.delete-ready {
-  box-shadow: 0 22px 48px rgba(196, 61, 56, 0.22);
+  box-shadow: 7px 9px 0 rgba(155, 75, 69, 0.18);
 }
 
 .note-card.drop-before::after,
 .note-card.drop-after::after {
-  background: linear-gradient(90deg, #4e7cff, #73a0ff);
+  background: rgba(52, 50, 45, 0.72);
   border-radius: 999px;
   content: "";
-  height: 5px;
+  height: 4px;
   left: 18px;
   position: absolute;
   right: 18px;
@@ -268,18 +287,23 @@
 }
 
 .note-card.drop-before::after {
-  top: -2px;
+  top: 0;
 }
 
 .note-card.drop-after::after {
-  bottom: -2px;
+  bottom: 0;
 }
 
 .note-drop-placeholder {
   background:
-    linear-gradient(180deg, rgba(78, 124, 255, 0.06), rgba(78, 124, 255, 0.02));
-  border: 1.5px dashed rgba(78, 124, 255, 0.26);
-  border-radius: 20px;
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 250, 240, 0.54) 0 31px,
+      rgba(76, 93, 116, 0.12) 32px,
+      rgba(255, 250, 240, 0.54) 33px
+    );
+  border: 1.5px dashed rgba(54, 52, 47, 0.26);
+  border-radius: 11px 8px 13px 9px;
   min-height: 220px;
   position: relative;
   transition:
@@ -289,19 +313,32 @@
 }
 
 .note-drop-placeholder::before {
-  background: linear-gradient(90deg, rgba(78, 124, 255, 0.92), rgba(115, 160, 255, 0.92));
-  border-radius: 999px;
+  background: rgba(72, 68, 60, 0.24);
+  border-radius: 12px 999px 999px 12px;
   content: "";
-  height: 4px;
+  height: 3px;
   left: 18px;
   position: absolute;
   right: 18px;
-  top: 0;
+  top: 10px;
 }
 
 .note-card.pinned {
-  border-color: rgba(220, 38, 38, 0.18);
-  box-shadow: 0 22px 36px rgba(220, 38, 38, 0.12);
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 248, 232, 0.98) 0 31px,
+      rgba(116, 84, 76, 0.13) 32px,
+      rgba(255, 248, 232, 0.98) 33px
+    );
+  border-color: rgba(116, 84, 76, 0.26);
+  box-shadow:
+    4px 5px 0 rgba(116, 84, 76, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.72) inset;
+}
+
+.note-card.pinned::before {
+  background: rgba(116, 84, 76, 0.42);
 }
 
 body.dragging-notes .notes-grid > .note-card,
@@ -310,15 +347,17 @@ body.dragging-notes .notes-grid > .note-drop-placeholder {
 }
 
 body.dragging-notes .note-card:hover {
-  border-color: rgba(78, 124, 255, 0.12);
-  box-shadow: 0 18px 30px rgba(58, 82, 140, 0.08);
+  border-color: rgba(54, 52, 47, 0.24);
+  box-shadow:
+    4px 5px 0 rgba(64, 59, 50, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.72) inset;
   transform: none;
 }
 
 .note-card-head {
-  align-items: start;
+  align-items: flex-start;
   display: flex;
-  gap: 10px;
+  gap: 12px;
   justify-content: space-between;
 }
 
@@ -328,10 +367,12 @@ body.dragging-notes .note-card:hover {
 }
 
 .note-card-title {
-  font-family: "Fraunces", serif;
-  font-size: 1.25rem;
-  letter-spacing: -0.03em;
-  line-height: 1.18;
+  color: #2f302d;
+  font-family: "Kalam", "Patrick Hand", cursive;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.24;
   min-width: 0;
   overflow: hidden;
   display: -webkit-box;
@@ -341,9 +382,12 @@ body.dragging-notes .note-card:hover {
 }
 
 .note-card-body {
-  color: var(--muted);
+  color: rgba(54, 54, 50, 0.82);
   display: -webkit-box;
-  line-height: 1.65;
+  font-family: "Patrick Hand", "Kalam", cursive;
+  font-size: 1.08rem;
+  font-weight: 400;
+  line-height: 1.48;
   overflow: hidden;
   white-space: pre-wrap;
   word-break: break-word;
@@ -355,58 +399,67 @@ body.dragging-notes .note-card:hover {
   align-items: center;
   display: inline-flex;
   flex: 0 0 auto;
-  gap: 6px;
+  gap: 4px;
 }
 
 .note-icon-action {
   align-items: center;
-  background: transparent;
-  border: 0;
-  color: rgba(148, 163, 184, 0.88);
+  background: rgba(255, 250, 240, 0.74);
+  border: 1.4px solid rgba(54, 52, 47, 0.16);
+  border-radius: 999px;
+  color: rgba(54, 54, 50, 0.66);
   display: inline-flex;
   flex: 0 0 auto;
-  height: 30px;
+  height: 28px;
   justify-content: center;
   padding: 0;
-  width: 30px;
+  width: 28px;
   transition:
+    background 180ms ease,
+    border-color 180ms ease,
     color 180ms ease,
     opacity 180ms ease,
     transform 180ms ease;
 }
 
 .note-icon-action:hover {
-  color: rgba(100, 116, 139, 0.98);
+  background: #fffaf0;
+  border-color: rgba(54, 52, 47, 0.32);
+  color: rgba(54, 54, 50, 0.95);
   transform: translateY(-1px);
 }
 
 .note-icon-action:focus-visible {
   border-radius: 999px;
-  box-shadow: 0 0 0 4px rgba(52, 84, 180, 0.12);
+  box-shadow: 0 0 0 4px rgba(234, 212, 166, 0.22);
   outline: none;
 }
 
 .note-icon-action svg {
-  height: 22px;
-  width: 22px;
+  height: 18px;
+  width: 18px;
 }
 
 .pin-toggle.is-pinned {
-  color: #d92d20;
+  background: rgba(255, 241, 241, 0.88);
+  border-color: rgba(196, 61, 56, 0.14);
+  color: #c43d38;
 }
 
 .delete-toggle:hover {
+  background: rgba(255, 241, 241, 0.9);
+  border-color: rgba(196, 61, 56, 0.14);
   color: #c43d38;
 }
 
 .delete-dropzone {
   align-items: flex-end;
   background:
-    linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.64) 56%, rgba(255, 245, 245, 0.9) 100%);
+    linear-gradient(180deg, transparent 0%, rgba(255, 250, 240, 0.64) 56%, rgba(244, 226, 212, 0.9) 100%);
   border: 0;
   bottom: 0;
   box-shadow: none;
-  color: rgba(196, 61, 56, 0.72);
+  color: rgba(128, 76, 70, 0.72);
   display: inline-flex;
   gap: 10px;
   justify-content: center;
@@ -429,11 +482,11 @@ body.dragging-notes .note-card:hover {
 
 .delete-dropzone::after {
   background:
-    linear-gradient(90deg, transparent, rgba(196, 61, 56, 0.3), transparent);
+    linear-gradient(90deg, transparent, rgba(128, 76, 70, 0.34), transparent);
   border: 0;
   border-radius: 999px;
   bottom: 54px;
-  box-shadow: 0 10px 28px rgba(196, 61, 56, 0.12);
+  box-shadow: 0 8px 18px rgba(128, 76, 70, 0.1);
   content: "";
   height: 2px;
   left: 50%;
@@ -463,14 +516,14 @@ body.dragging-notes {
 
 .delete-dropzone.is-active {
   background:
-    linear-gradient(180deg, transparent 0%, rgba(255, 247, 247, 0.78) 48%, rgba(255, 229, 229, 0.96) 100%);
-  color: #c43d38;
+    linear-gradient(180deg, transparent 0%, rgba(255, 248, 240, 0.76) 48%, rgba(240, 211, 196, 0.96) 100%);
+  color: #804c46;
 }
 
 .delete-dropzone.is-active::after {
   background:
-    linear-gradient(90deg, transparent, rgba(196, 61, 56, 0.78), transparent);
-  box-shadow: 0 14px 34px rgba(196, 61, 56, 0.2);
+    linear-gradient(90deg, transparent, rgba(128, 76, 70, 0.78), transparent);
+  box-shadow: 0 10px 24px rgba(128, 76, 70, 0.18);
   opacity: 1;
   width: min(78vw, 660px);
 }
@@ -495,6 +548,7 @@ body.dragging-notes {
 }
 
 .delete-dropzone p {
+  font-family: "Kalam", "Patrick Hand", cursive;
   font-size: 0.84rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -515,9 +569,9 @@ body.dragging-notes {
 }
 
 .empty-state h2 {
-  font-family: "Fraunces", serif;
+  font-family: "Kalam", "Patrick Hand", cursive;
   font-size: 1.8rem;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
 }
 
 .modal-close {
@@ -571,7 +625,7 @@ body.dragging-notes {
   .note-card {
     gap: 10px;
     min-height: 180px;
-    padding: 14px 14px 16px;
+    padding: 16px 14px 16px;
   }
 
   .note-drop-placeholder {
@@ -579,13 +633,19 @@ body.dragging-notes {
   }
 
   .note-card::before {
+    height: 3px;
     left: 14px;
     right: 14px;
+    top: 8px;
+    width: auto;
   }
 
   .note-drop-placeholder::before {
+    height: 3px;
     left: 14px;
     right: 14px;
+    top: 8px;
+    width: auto;
   }
 
   .note-card.drop-before::after,
@@ -595,13 +655,13 @@ body.dragging-notes {
   }
 
   .note-card-title {
-    font-size: 1.02rem;
-    line-height: 1.24;
+    font-size: 1rem;
+    line-height: 1.26;
   }
 
   .note-card-body {
-    font-size: 0.88rem;
-    line-height: 1.45;
+    font-size: 0.96rem;
+    line-height: 1.42;
     -webkit-line-clamp: 5;
   }
 

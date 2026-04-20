@@ -468,6 +468,16 @@ function resetDragState() {
   setDeleteDropzoneState(elements, { visible: false, active: false });
 }
 
+function isPointerOverDraggedCard(noteId) {
+  const hoveredElement = document.elementFromPoint(
+    state.drag.currentX,
+    state.drag.currentY,
+  );
+  const card = hoveredElement?.closest(".note-card.interactive[data-note-id]");
+
+  return card?.dataset.noteId === noteId;
+}
+
 function finishPointerDrag(shouldPersist = true) {
   window.removeEventListener("pointermove", handlePointerMove);
   window.removeEventListener("pointerup", handlePointerUp);
@@ -483,6 +493,11 @@ function finishPointerDrag(shouldPersist = true) {
     shouldPersist && wasActive && !deleteActive && targetNoteId
       ? buildReorderedNotes(targetNoteId, targetPosition)
       : null;
+  const shouldOpenClickedCard =
+    shouldPersist &&
+    !wasActive &&
+    Boolean(draggedNote) &&
+    isPointerOverDraggedCard(draggedNoteId);
 
   if (state.drag.sourceCard && state.drag.pointerId !== null) {
     try {
@@ -501,6 +516,9 @@ function finishPointerDrag(shouldPersist = true) {
     } else {
       syncView();
     }
+  } else if (shouldOpenClickedCard) {
+    state.drag.suppressClick = true;
+    openNoteEditor(draggedNote);
   } else {
     syncView();
   }

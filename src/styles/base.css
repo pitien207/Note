@@ -1,19 +1,21 @@
 :root {
-  --bg: #f7f5f1;
-  --panel: rgba(255, 255, 255, 0.94);
-  --panel-border: rgba(30, 41, 59, 0.08);
-  --shadow: 0 20px 44px rgba(30, 41, 59, 0.08);
-  --text: #172033;
-  --muted: #566074;
-  --muted-soft: #98a2b3;
-  --accent: #3454b4;
-  --accent-strong: #1f377f;
-  --accent-soft: #78a8ff;
-  --accent-aqua: #8edfd6;
-  --accent-warm: #f2d2b2;
-  --success: #21695b;
-  --surface: #ffffff;
-  --danger: #c43d38;
+  --bg: #f5edda;
+  --paper: #fffaf0;
+  --paper-line: rgba(76, 93, 116, 0.13);
+  --panel: rgba(255, 250, 240, 0.94);
+  --panel-border: rgba(62, 62, 58, 0.18);
+  --shadow: 5px 7px 0 rgba(68, 62, 52, 0.12);
+  --text: #343331;
+  --muted: #68635b;
+  --muted-soft: #9b9284;
+  --accent: #4f5f6c;
+  --accent-strong: #31383f;
+  --accent-soft: #b8c4c7;
+  --accent-aqua: #c5d8d1;
+  --accent-warm: #ead4a6;
+  --success: #596f62;
+  --surface: #fffaf0;
+  --danger: #9b4b45;
   --radius-xl: 24px;
   --radius-lg: 18px;
   --radius-md: 14px;
@@ -32,17 +34,23 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.72), transparent 30%),
-    linear-gradient(145deg, #f6fbff 0%, #eef4ff 34%, #fdf1e7 72%, #fff7f1 100%);
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 31px,
+      var(--paper-line) 32px,
+      transparent 33px
+    ),
+    linear-gradient(90deg, transparent 0 78px, rgba(183, 82, 73, 0.16) 79px 80px, transparent 81px),
+    linear-gradient(180deg, #fbf4e2 0%, #f5edda 100%);
   color: var(--text);
-  font-family: "Manrope", sans-serif;
+  font-family: "Patrick Hand", "Kalam", "Manrope", sans-serif;
   line-height: 1.5;
   overflow-x: hidden;
   position: relative;
 }
 
 body::selection {
-  background: rgba(52, 84, 180, 0.18);
+  background: rgba(79, 95, 108, 0.18);
 }
 
 body::before,
@@ -55,25 +63,19 @@ body::after {
 
 body::before {
   background:
-    radial-gradient(circle at 10% 14%, rgba(78, 124, 255, 0.28), transparent 0 24%),
-    radial-gradient(circle at 82% 14%, rgba(115, 229, 213, 0.28), transparent 0 20%),
-    radial-gradient(circle at 86% 72%, rgba(255, 184, 120, 0.24), transparent 0 18%),
-    radial-gradient(circle at 18% 84%, rgba(255, 118, 168, 0.16), transparent 0 18%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.42), transparent 44%);
-  filter: blur(18px);
+    repeating-linear-gradient(
+      115deg,
+      rgba(54, 49, 43, 0.025) 0 1px,
+      transparent 1px 7px
+    );
+  opacity: 0.9;
   z-index: 0;
 }
 
 body::after {
-  background-image:
-    linear-gradient(rgba(78, 124, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(78, 124, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(135deg, rgba(115, 229, 213, 0.08), transparent 36%),
-    linear-gradient(35deg, rgba(255, 184, 120, 0.08), transparent 42%);
-  background-position: center;
-  background-size: 34px 34px, 34px 34px, 100% 100%, 100% 100%;
-  mask-image: radial-gradient(circle at center, black 40%, transparent 84%);
-  opacity: 0.92;
+  background:
+    linear-gradient(90deg, rgba(60, 57, 50, 0.04), transparent 18%, transparent 82%, rgba(60, 57, 50, 0.035));
+  opacity: 1;
   z-index: 0;
 }
 
@@ -124,24 +126,22 @@ p {
 
 .panel {
   background: var(--panel);
-  backdrop-filter: blur(18px);
-  border: 1px solid var(--panel-border);
-  border-radius: var(--radius-xl);
+  border: 1.5px solid var(--panel-border);
+  border-radius: 12px 10px 14px 11px;
   box-shadow: var(--shadow);
 }
 
 @media (max-width: 720px) {
   body::before {
     background:
-      radial-gradient(circle at 14% 12%, rgba(78, 124, 255, 0.22), transparent 0 28%),
-      radial-gradient(circle at 86% 18%, rgba(115, 229, 213, 0.18), transparent 0 24%),
-      radial-gradient(circle at 64% 88%, rgba(255, 184, 120, 0.14), transparent 0 24%),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.22), transparent 52%);
+      repeating-linear-gradient(
+        115deg,
+        rgba(54, 49, 43, 0.02) 0 1px,
+        transparent 1px 6px
+      );
   }
 
   body::after {
-    background-size: 26px 26px;
-    mask-image: radial-gradient(circle at center, black 24%, transparent 88%);
-    opacity: 0.62;
+    opacity: 0.74;
   }
 }
