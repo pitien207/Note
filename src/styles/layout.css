@@ -19,32 +19,40 @@
   display: inline-flex;
   color: #33322f;
   font-family: "Kalam", "Patrick Hand", cursive;
-  font-size: clamp(2.85rem, 5vw, 3.8rem);
+  font-size: clamp(2.82rem, 5vw, 3.75rem);
   font-weight: 700;
-  gap: 14px;
+  gap: 12px;
+  line-height: 1;
   letter-spacing: 0;
-  transform: rotate(-1deg);
+  min-height: 70px;
 }
 
 .brand-mark {
   align-items: center;
   display: inline-flex;
   flex: 0 0 auto;
-  height: 56px;
+  height: 62px;
   filter:
     grayscale(0.28)
     contrast(0.92)
     drop-shadow(2px 3px 0 rgba(64, 59, 50, 0.12));
-  width: 56px;
+  justify-content: center;
+  transform: translateY(-4px);
+  width: 62px;
 }
 
 .brand-mark img {
+  display: block;
   height: 100%;
+  object-fit: contain;
   width: 100%;
 }
 
 .brand-label {
-  line-height: 0.9;
+  align-items: center;
+  display: inline-flex;
+  line-height: 1;
+  transform: translateY(5px);
 }
 
 .topbar-actions {
@@ -74,12 +82,17 @@
 }
 
 .modal-backdrop {
-  background: rgba(54, 49, 43, 0.34);
+  background: rgba(54, 49, 43, 0.56);
   inset: 0;
   position: absolute;
 }
 
 .composer-modal {
+  background: #fffaf0;
+  border-color: rgba(54, 52, 47, 0.3);
+  box-shadow:
+    7px 9px 0 rgba(64, 59, 50, 0.16),
+    0 0 0 999px rgba(54, 49, 43, 0.06);
   display: grid;
   gap: 20px;
   margin: 0 auto;
@@ -121,13 +134,19 @@
   }
 
   .brand {
-    font-size: clamp(2.95rem, 8.7vw, 3.55rem);
-    gap: 14px;
+    font-size: clamp(2.88rem, 8.7vw, 3.45rem);
+    gap: 10px;
+    min-height: 62px;
   }
 
   .brand-mark {
     height: 56px;
+    transform: translateY(-3px);
     width: 56px;
+  }
+
+  .brand-label {
+    transform: translateY(4px);
   }
 
   .notes-grid {

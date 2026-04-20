@@ -17,9 +17,9 @@
   background:
     repeating-linear-gradient(
       to bottom,
-      rgba(255, 250, 240, 0.96) 0 31px,
+      #fffaf0 0 31px,
       rgba(76, 93, 116, 0.12) 32px,
-      rgba(255, 250, 240, 0.96) 33px
+      #fffaf0 33px
     );
   border: 1.5px solid rgba(62, 62, 58, 0.18);
   border-radius: 9px 12px 10px 8px;
@@ -56,6 +56,13 @@
 
 .composer-title-input:focus,
 .composer-content-input:focus {
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      #fffaf0 0 31px,
+      rgba(76, 93, 116, 0.12) 32px,
+      #fffaf0 33px
+    );
   border-color: rgba(64, 61, 55, 0.32);
   box-shadow:
     3px 4px 0 rgba(64, 59, 50, 0.1),

@@ -22,6 +22,7 @@ const state = {
     draggedNoteId: "",
     sourceCard: null,
     pointerId: null,
+    pointerType: "",
     startX: 0,
     startY: 0,
     currentX: 0,
@@ -447,11 +448,16 @@ function cancelDragFrame() {
   state.drag.animationFrameId = 0;
 }
 
+function getDragStartThreshold() {
+  return state.drag.pointerType === "touch" ? 18 : 8;
+}
+
 function resetDragState() {
   cancelDragFrame();
   state.drag.draggedNoteId = "";
   state.drag.sourceCard = null;
   state.drag.pointerId = null;
+  state.drag.pointerType = "";
   state.drag.startX = 0;
   state.drag.startY = 0;
   state.drag.currentX = 0;
@@ -548,6 +554,7 @@ function handlePointerDown(event) {
   state.drag.draggedNoteId = card.dataset.noteId;
   state.drag.sourceCard = card;
   state.drag.pointerId = event.pointerId;
+  state.drag.pointerType = event.pointerType || "";
   state.drag.startX = event.clientX;
   state.drag.startY = event.clientY;
   state.drag.currentX = event.clientX;
@@ -583,7 +590,7 @@ function handlePointerMove(event) {
     const deltaX = event.clientX - state.drag.startX;
     const deltaY = event.clientY - state.drag.startY;
 
-    if (Math.hypot(deltaX, deltaY) < 8) {
+    if (Math.hypot(deltaX, deltaY) < getDragStartThreshold()) {
       return;
     }
 
@@ -613,6 +620,8 @@ function handlePointerUp(event) {
     return;
   }
 
+  state.drag.currentX = event.clientX;
+  state.drag.currentY = event.clientY;
   finishPointerDrag(true);
 }
 
