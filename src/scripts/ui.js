@@ -203,7 +203,7 @@ function animateNotePositions(previousPositions, cards, draggedNoteId) {
     card.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
 
     requestAnimationFrame(() => {
-      card.style.transition = "transform 320ms cubic-bezier(0.22, 1, 0.36, 1)";
+      card.style.transition = "transform 240ms cubic-bezier(0.2, 0, 0, 1)";
       card.style.transform = "";
 
       const cleanup = () => {
@@ -337,8 +337,9 @@ export function createDragProxy(card) {
   proxy.style.transition = "none";
   proxy.style.width = `${rect.width}px`;
   proxy.style.height = `${rect.height}px`;
-  proxy.style.left = `${rect.left}px`;
-  proxy.style.top = `${rect.top}px`;
+  proxy.style.left = "0";
+  proxy.style.top = "0";
+  proxy.style.transform = `translate3d(${rect.left}px, ${rect.top}px, 0)`;
 
   document.body.append(proxy);
 
@@ -346,9 +347,7 @@ export function createDragProxy(card) {
 }
 
 export function moveDragProxy(proxy, x, y) {
-  proxy.style.left = `${x}px`;
-  proxy.style.top = `${y}px`;
-  proxy.style.transform = "rotate(1.5deg)";
+  proxy.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(0.7deg)`;
 }
 
 export function removeDragProxy(proxy) {

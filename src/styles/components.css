@@ -235,6 +235,7 @@
 
 .drag-proxy {
   animation: none !important;
+  backface-visibility: hidden;
   cursor: grabbing;
   left: 0;
   margin: 0;
@@ -242,16 +243,16 @@
   position: fixed;
   top: 0;
   transform-origin: center center;
-  will-change: left, top, transform;
+  will-change: transform;
   z-index: 35;
-  box-shadow: 0 32px 56px rgba(58, 82, 140, 0.22);
+  box-shadow: 0 22px 42px rgba(58, 82, 140, 0.18);
   transition:
     box-shadow 180ms ease,
     opacity 180ms ease;
 }
 
 .drag-proxy.delete-ready {
-  box-shadow: 0 32px 64px rgba(196, 61, 56, 0.24);
+  box-shadow: 0 22px 48px rgba(196, 61, 56, 0.22);
 }
 
 .note-card.drop-before::after,
@@ -282,7 +283,7 @@
   min-height: 220px;
   position: relative;
   transition:
-    transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 240ms cubic-bezier(0.2, 0, 0, 1),
     opacity 220ms ease,
     border-color 220ms ease;
 }
@@ -306,6 +307,12 @@
 body.dragging-notes .notes-grid > .note-card,
 body.dragging-notes .notes-grid > .note-drop-placeholder {
   will-change: transform;
+}
+
+body.dragging-notes .note-card:hover {
+  border-color: rgba(78, 124, 255, 0.12);
+  box-shadow: 0 18px 30px rgba(58, 82, 140, 0.08);
+  transform: none;
 }
 
 .note-card-head {
@@ -393,31 +400,54 @@ body.dragging-notes .notes-grid > .note-drop-placeholder {
 }
 
 .delete-dropzone {
-  align-items: center;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(196, 61, 56, 0.12);
-  border-radius: 26px;
-  bottom: 20px;
-  box-shadow: 0 24px 40px rgba(15, 23, 42, 0.16);
-  color: rgba(196, 61, 56, 0.7);
-  display: grid;
+  align-items: flex-end;
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, 0.64) 56%, rgba(255, 245, 245, 0.9) 100%);
+  border: 0;
+  bottom: 0;
+  box-shadow: none;
+  color: rgba(196, 61, 56, 0.72);
+  display: inline-flex;
   gap: 10px;
-  justify-items: center;
-  left: 50%;
-  min-width: min(92vw, 320px);
+  justify-content: center;
+  height: clamp(84px, 15vh, 132px);
+  left: 0;
+  min-height: 84px;
   opacity: 0;
-  padding: 18px 24px 20px;
+  padding: 0 20px;
   pointer-events: none;
   position: fixed;
-  transform: translate(-50%, 24px);
+  right: 0;
+  transform: translate3d(0, 28px, 0);
   transition:
     opacity 180ms ease,
     transform 180ms ease,
     background 180ms ease,
-    color 180ms ease,
-    border-color 180ms ease,
-    box-shadow 180ms ease;
+    color 180ms ease;
   z-index: 30;
+}
+
+.delete-dropzone::after {
+  background:
+    linear-gradient(90deg, transparent, rgba(196, 61, 56, 0.3), transparent);
+  border: 0;
+  border-radius: 999px;
+  bottom: 54px;
+  box-shadow: 0 10px 28px rgba(196, 61, 56, 0.12);
+  content: "";
+  height: 2px;
+  left: 50%;
+  max-width: calc(100vw - 32px);
+  opacity: 0.72;
+  position: absolute;
+  transform: translateX(-50%);
+  transition:
+    background 180ms ease,
+    box-shadow 180ms ease,
+    opacity 180ms ease,
+    width 180ms ease;
+  width: min(68vw, 520px);
+  z-index: 0;
 }
 
 body.dragging-notes {
@@ -428,35 +458,51 @@ body.dragging-notes {
 .delete-dropzone.is-visible {
   opacity: 1;
   pointer-events: auto;
-  transform: translate(-50%, 0);
+  transform: translate3d(0, 0, 0);
 }
 
 .delete-dropzone.is-active {
-  background: rgba(255, 238, 238, 0.98);
-  border-color: rgba(196, 61, 56, 0.24);
-  box-shadow: 0 26px 50px rgba(196, 61, 56, 0.2);
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(255, 247, 247, 0.78) 48%, rgba(255, 229, 229, 0.96) 100%);
   color: #c43d38;
+}
+
+.delete-dropzone.is-active::after {
+  background:
+    linear-gradient(90deg, transparent, rgba(196, 61, 56, 0.78), transparent);
+  box-shadow: 0 14px 34px rgba(196, 61, 56, 0.2);
+  opacity: 1;
+  width: min(78vw, 660px);
 }
 
 .delete-dropzone-icon {
   align-items: center;
-  background: rgba(196, 61, 56, 0.08);
-  border-radius: 999px;
+  background: transparent;
+  border-radius: 0;
   display: inline-flex;
-  height: 72px;
+  flex: 0 0 auto;
+  height: 24px;
   justify-content: center;
-  width: 72px;
+  margin-bottom: 28px;
+  position: relative;
+  width: 24px;
+  z-index: 1;
 }
 
 .delete-dropzone svg {
-  height: 34px;
-  width: 34px;
+  height: 22px;
+  width: 22px;
 }
 
 .delete-dropzone p {
-  font-size: 0.95rem;
+  font-size: 0.84rem;
   font-weight: 700;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.06em;
+  line-height: 24px;
+  margin-bottom: 28px;
+  position: relative;
+  text-transform: uppercase;
+  z-index: 1;
 }
 
 .empty-state {
@@ -574,18 +620,36 @@ body.dragging-notes {
   }
 
   .delete-dropzone {
-    bottom: 14px;
-    min-width: calc(100vw - 28px);
-    padding: 16px 18px 18px;
+    height: clamp(78px, 15vh, 118px);
+    min-height: 78px;
+    padding: 0 14px;
+  }
+
+  .delete-dropzone::after {
+    bottom: 48px;
+    height: 2px;
+    max-width: calc(100vw - 28px);
+    width: min(76vw, 420px);
+  }
+
+  .delete-dropzone.is-active::after {
+    width: min(88vw, 520px);
   }
 
   .delete-dropzone-icon {
-    height: 64px;
-    width: 64px;
+    height: 22px;
+    margin-bottom: 21px;
+    width: 22px;
   }
 
   .delete-dropzone svg {
-    height: 30px;
-    width: 30px;
+    height: 20px;
+    width: 20px;
+  }
+
+  .delete-dropzone p {
+    font-size: 0.78rem;
+    line-height: 22px;
+    margin-bottom: 21px;
   }
 }

@@ -34,6 +34,7 @@ const state = {
     deleteActive: false,
     suppressClick: false,
     proxy: null,
+    animationFrameId: 0,
   },
 };
 
@@ -214,35 +215,105 @@ function handleGridKeydown(event) {
   runNoteAction("open", getNoteById(card.dataset.noteId));
 }
 
-function getDropTargetFromPointer(clientX, clientY) {
-  const hoveredElement = document.elementFromPoint(clientX, clientY);
-  const card = hoveredElement?.closest(".note-card.interactive[data-note-id]");
+function getCardRows(cards) {
+  const rowTolerance = 10;
+  const rows = [];
 
-  if (card && card.dataset.noteId !== state.drag.draggedNoteId) {
+  cards.forEach((card) => {
     const rect = card.getBoundingClientRect();
-    const position =
-      clientY < rect.top + rect.height / 2 ? "before" : "after";
 
-    return {
-      noteId: card.dataset.noteId,
-      position,
-    };
-  }
+    if (!rect.width || !rect.height) {
+      return;
+    }
 
-  const cards = [...elements.notesGrid.querySelectorAll(".note-card.interactive[data-note-id]")];
+    const row = rows.find((candidate) => (
+      Math.abs(candidate.top - rect.top) <= rowTolerance
+    ));
+    const item = { card, rect };
 
-  if (!cards.length) {
+    if (row) {
+      row.items.push(item);
+      row.top = Math.min(row.top, rect.top);
+      row.bottom = Math.max(row.bottom, rect.bottom);
+      return;
+    }
+
+    rows.push({
+      top: rect.top,
+      bottom: rect.bottom,
+      items: [item],
+    });
+  });
+
+  rows.sort((left, right) => left.top - right.top);
+  rows.forEach((row) => {
+    row.items.sort((left, right) => left.rect.left - right.rect.left);
+  });
+
+  return rows;
+}
+
+function getDropTargetFromRow(row, clientX) {
+  const firstItem = row.items[0];
+
+  if (!firstItem) {
     return null;
   }
 
-  const lastCard = cards.at(-1);
+  for (const item of row.items) {
+    const midpointX = item.rect.left + item.rect.width / 2;
 
-  if (!lastCard || lastCard.dataset.noteId === state.drag.draggedNoteId) {
+    if (clientX < midpointX) {
+      return {
+        noteId: item.card.dataset.noteId,
+        position: "before",
+      };
+    }
+  }
+
+  const lastItem = row.items.at(-1);
+
+  return {
+    noteId: lastItem.card.dataset.noteId,
+    position: "after",
+  };
+}
+
+function getDropTargetFromPointer(clientX, clientY) {
+  const cards = [
+    ...elements.notesGrid.querySelectorAll(".note-card.interactive[data-note-id]"),
+  ].filter((card) => card.dataset.noteId !== state.drag.draggedNoteId);
+  const rows = getCardRows(cards);
+
+  if (!rows.length) {
+    return null;
+  }
+
+  if (clientY < rows[0].top) {
+    return getDropTargetFromRow(rows[0], clientX);
+  }
+
+  for (let index = 0; index < rows.length; index += 1) {
+    const row = rows[index];
+    const nextRow = rows[index + 1];
+    const rowBandBottom = nextRow
+      ? row.bottom + Math.max(0, nextRow.top - row.bottom) / 2
+      : Infinity;
+
+    if (clientY <= rowBandBottom) {
+      return getDropTargetFromRow(row, clientX);
+    }
+  }
+
+  const lastRow = rows.at(-1);
+  const lastItem = lastRow?.items.at(-1);
+
+  if (!lastItem) {
     return null;
   }
 
   return {
-    noteId: lastCard.dataset.noteId,
+    noteId: lastItem.card.dataset.noteId,
     position: "after",
   };
 }
@@ -355,7 +426,29 @@ function updateDragFeedback() {
   }
 }
 
+function queueDragFrame() {
+  if (state.drag.animationFrameId) {
+    return;
+  }
+
+  state.drag.animationFrameId = window.requestAnimationFrame(() => {
+    state.drag.animationFrameId = 0;
+    updateDragProxyPosition();
+    updateDragFeedback();
+  });
+}
+
+function cancelDragFrame() {
+  if (!state.drag.animationFrameId) {
+    return;
+  }
+
+  window.cancelAnimationFrame(state.drag.animationFrameId);
+  state.drag.animationFrameId = 0;
+}
+
 function resetDragState() {
+  cancelDragFrame();
   state.drag.draggedNoteId = "";
   state.drag.sourceCard = null;
   state.drag.pointerId = null;
@@ -370,6 +463,7 @@ function resetDragState() {
   state.drag.targetPosition = "after";
   state.drag.deleteActive = false;
   state.drag.proxy = null;
+  state.drag.animationFrameId = 0;
   clearDragIndicators(elements);
   setDeleteDropzoneState(elements, { visible: false, active: false });
 }
@@ -493,8 +587,7 @@ function handlePointerMove(event) {
   }
 
   event.preventDefault();
-  updateDragProxyPosition();
-  updateDragFeedback();
+  queueDragFrame();
 }
 
 function handlePointerUp(event) {
